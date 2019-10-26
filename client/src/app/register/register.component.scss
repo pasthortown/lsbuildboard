@@ -1,0 +1,21 @@
+.register-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  padding: 3em;
+  background-color: rgba(75, 72, 72, 0.8);
+  background-image: url('./../../assets/images/background_login.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.pretty-form {
+  background-color:rgba(149, 151, 155, 0.5);
+  padding:40px;
+  border-radius: 25px;
+}

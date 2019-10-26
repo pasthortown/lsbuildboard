@@ -1,0 +1,16 @@
+migrations
+task_states
+work_times
+role_assigments
+project_comments
+task_attachments
+project_attachments
+profile_pictures
+history_attachments
+tasks
+histories
+roles
+states
+priorities
+projects
+users

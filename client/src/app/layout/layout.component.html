@@ -1,0 +1,13 @@
+<aside class="sidebar pos-absolute z-2"
+       data-role="sidebar"
+       data-toggle="#sidebar-toggle-3"
+       id="sb3"
+       data-shift=".shifted-content">
+    <app-sidebar></app-sidebar>
+</aside>
+<div class="shifted-content h-100 p-ab">
+    <app-navbar class="app-bar pos-absolute bg-darkGrayBlue fg-white" data-expand-point="md" data-role="appbar"></app-navbar>
+    <div class="h-100 p-4">
+        <router-outlet></router-outlet>
+    </div>
+</div>

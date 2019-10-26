@@ -1,0 +1,38 @@
+<div class="sidebar-header bg-darkGrayBlue fg-white">
+   <a class="fg-white sub-action"[routerLink]="['/login']" (click)="logOut()">
+      <span class="mif-settings-power mif-2x"></span>
+   </a>
+   <a class="avatar" [routerLink]="['/profile']" [routerLinkActive]="['router-link-active']">
+      <img src="{{profileImg}}"/>
+   </a>
+   <span class="title" *ngIf="refreshUser()">{{ user.name }}</span>
+   <span class="subtitle"> 2019 © LSystems</span>
+</div>
+<ul class="sidebar-menu">
+   <li class="group-title">SCRUM</li>
+   <li>
+      <a [routerLink]="['/main']" [routerLinkActive]="['router-link-active']">Dashboard Tareas</a>
+   </li>
+   <li>
+      <a [routerLink]="['/dashboard_project_manager']" [routerLinkActive]="['router-link-active']">Dashboard Gestor de Proyectos</a>
+   </li>
+   <li>
+      <a [routerLink]="['/project']" [routerLinkActive]="['router-link-active']">Proyectos</a>
+   </li>   
+   <li>
+      <a [routerLink]="['/history']" [routerLinkActive]="['router-link-active']">Historias de Usuario</a>
+   </li>
+   <li>
+      <a [routerLink]="['/task']" [routerLinkActive]="['router-link-active']">Creación de Tareas</a>
+   </li>
+   <li class="group-title">BDD</li>
+   <li>
+      <a [routerLink]="['/role']" [routerLinkActive]="['router-link-active']">Roles</a>
+   </li>
+   <li>
+      <a [routerLink]="['/state']" [routerLinkActive]="['router-link-active']">Estados</a>
+   </li>
+   <li>
+      <a [routerLink]="['/priority']" [routerLinkActive]="['router-link-active']">Prioridades</a>
+   </li>
+</ul>

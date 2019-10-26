@@ -1,0 +1,30 @@
+<button class="app-bar-item c-pointer" id="sidebar-toggle-3">
+  <span class="mif-menu fg-white"></span>
+</button>
+<a class="d-block brand fg-white no-hover">
+    <span style="width: 55px;">
+      <img src="assets/images/logo.png" width="15" height="15" alt="" />
+    </span>
+    <span class="ml-2">LSystems - SCRUM Manager</span>
+  </a>
+<ul class="app-bar-menu ml-auto collapsed">
+    <li>
+        <a class="dropdown-toggle ml-auto">
+          <img class="rounded" src="{{profileImg}}" width="32px" height="32px">
+          <small class="ml-2 text-light" *ngIf="refreshUser()">{{user.name}}</small>
+        </a>
+        <ul class="d-menu" data-role="dropdown">
+            <li>
+                <a class="dropdown-item" [routerLink]="['/profile']">
+                  <i class="fa fa-fw fa-user"></i> Perfil
+                </a>
+              </li>
+              <li class="divider bg-lightGray"></li>
+              <li>
+                <a class="dropdown-item" [routerLink]="['/login']" (click)="logout()">
+                  <i class="fa fa-fw fa-power-off"></i> Cerrar Sesión
+                </a>
+              </li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="cell-4" *ngFor="let task_group of task_groups">
+        <div class="row">
+            <h2 class="cell-12 text-center">{{task_group.group_title}}</h2>
+        </div>
+        <div class="cell-12" style="height: 80vh; overflow-y: auto;">
+            <div class="card" *ngFor="let task of task_group.tasks">
+                <div class="card-header">
+                    <span class="badge bg-red fg-black" *ngIf="task.priority_id==1">A</span>
+                    <span class="badge bg-yellow fg-black" *ngIf="task.priority_id==2">M</span>
+                    <span class="badge bg-green fg-black" *ngIf="task.priority_id==3">B</span>
+                    <table class="table">
+                        <tr>
+                            <td class="text-left">
+                                <button *ngIf="task.state_id > 1" class="button dark outline" (click)="move('left', task)"><span class="mif-chevron-thin-left"></span></button>
+                            </td>
+                            <td class="text-center">
+                                <strong>{{task.title}}</strong><br/>
+                                <small><i>{{task.assigned_time}}</i></small>
+                            </td>
+                            <td class="text-right">
+                                <button *ngIf="task.state_id < task_groups.length" class="button dark outline" (click)="move('right', task)"><span class="mif-chevron-thin-right"></span></button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="task.moving">
+                            <td colspan="3">
+                                <input type="text" data-role="input" data-prepend="Comentario:" #comment (keypress)="commit($event, task, comment.value)">
+                            </td>
+                        </tr>
+                    </table>
+                    <small><span class="fas fa-comment"></span>&nbsp;<i>{{task.comment}}</i></small>
+                </div>
+                <div class="card-content p-2">
+                    <small class="cell-12" [innerHTML]="task.description">       
+                    </small>
+                    <div class="cell-12">
+                        <button class="button primary square outline mini" (click)="getAttachment(task)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <input type="file" [hidden]="true" #task_attachment id="task_attachment_file" name="task_attachment_file" (change)="CodeFileTaskAttachment($event, task)">
+                        <button class="button dark square outline mini" (click)="task_attachment.click()">
+                            <i class="mif-upload"></i>
+                        </button>
+                    </div>
+                    <table class="table subcompact">
+                        <tr *ngFor="let attachment of task.attachment">
+                            <td>
+                                {{attachment.task_attachment_file_name}}
+                            </td>
+                            <td>
+                                <button class="button dark square outline mini" (click)="downloadAttachment(attachment)">
+                                    <i class="mif-download"></i>
+                                </button>
+                                <button class="button alert square outline mini" (click)="deleteAttachment(attachment, task)">
+                                    <i class="mif-cancel"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <table class="table subcompact">
+                        <tbody>
+                            <tr>
+                                <th><strong>Tiempo Estimado</strong></th>
+                                <td><i>&nbsp;{{task.time_expected}}</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>

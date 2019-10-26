@@ -1,0 +1,81 @@
+<div class="row">
+   <h1 class="cell-12 text-right">
+      Roles
+   </h1>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <div class="toolbar">
+         <button class="tool-button primary" title="Actualizar" (click)="goToPage(currentPage)"><i class="fas fa-sync"></i></button>
+         <button class="tool-button success ml-2" title="Nuevo" (click)="newRole()"><i class="fas fa-file"></i></button>
+         <button class="tool-button warning" title="Editar" (click)="editRole()"><i class="fas fa-edit"></i></button>
+         <button class="tool-button alert ml-2" title="Eliminar" (click)="deleteRole()"><i class="fas fa-trash"></i></button>
+         <button class="tool-button dark ml-2" title="BackUp" (click)="backup()"><i class="fas fa-download"></i></button>
+         <button class="tool-button dark" title="Cargar" (click)="uploadInput.click()"><i class="fas fa-upload"></i></button>
+         <input [hidden]="true" type="file" class="form-control" #uploadInput (change)="decodeUploadFile($event)" accept=".json"/>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <table class="table row-hover mt-2">
+         <thead>
+            <tr>
+               <th>Seleccionado</th>
+               <th>Rol</th>
+               <th>Descripción</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr *ngFor="let role of roles" (click)="selectRole(role)">
+               <td class="text-right"><span *ngIf="roleSelected === role" class="far fa-hand-point-right"></span></td>
+               <td>{{role.name}}</td>
+               <td [innerHTML]="role.description"></td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <div class="toolbar">
+         <button type="button" class="button light" *ngIf="currentPage === 1" title="Primera Página" disabled>Primera</button>
+         <button type="button" class="button light" *ngIf="currentPage !== 1" title="Primera Página" (click)="goToPage(1)">Primera</button>
+         <button type="button" class="button light" *ngIf="currentPage > 1" title="Página Anterior" (click)="goToPage((currentPage * 1) - 1)">{{(currentPage * 1) - 1}}</button>
+         <button type="button" class="button primary" title="Página Actual">{{currentPage}}</button>
+         <button type="button" class="button light" *ngIf="currentPage < lastPage" title="Página Siguiente" (click)="goToPage((currentPage * 1) + 1)">{{(currentPage * 1) + 1}}</button>
+         <button type="button" class="button light" *ngIf="currentPage !== lastPage" title="Última Página" (click)="goToPage(lastPage)">Última</button>
+         <button type="button" class="button light" *ngIf="currentPage === lastPage" title="Última Página" disabled>Última</button>
+         <button type="button" class="button success ml-2" title="Ir a la Página" (click)="goToPage(goToPageNumber.value)">Ir a</button>
+         <input type="number" min="{{1}}" max="{{lastPage}}" placeholder="Ir a la Página" #goToPageNumber>
+      </div>
+   </div>
+</div>
+<div class="row" *ngIf="showDialog">
+   <div class="cell-12 mt-5">
+      <div class="window" data-role="window" data-icon="<span class='mif-pencil'></span>" data-title="Datos:" data-btn-close="false" data-btn-min="false" data-btn-max="false" data-width="800" data-shadow="true" data-place="top-center" data-resizable="false" data-draggable="false">
+         <div class="window-content m-2">
+            <div class="container">
+               <div class="row">
+                  <div class="cell-12">
+                     <div class="form-group row">
+                        <label for="name">Rol</label>
+                        <input type="text" id="name" name="name" placeholder="Rol" [(ngModel)]="roleSelected.name">
+                     </div>
+                     <div class="form-group row">
+                        <label for="description">Descripción</label>
+                        <ck-editor id="description" name="description" skin="moono-lisa" [(ngModel)]="roleSelected.description"></ck-editor>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt-2">
+                  <div class="cell text-center">
+                     <button type="button" class="button success" (click)="saveDialogResult()">Guardar</button>
+                     <button type="button" class="button alert" (click)="cancelDialogResult()">Cancelar</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

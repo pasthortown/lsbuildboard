@@ -1,0 +1,133 @@
+<div class="row">
+   <h1 class="cell-12 text-right">
+      Proyectos
+   </h1>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <div class="toolbar">
+         <button class="tool-button primary" title="Actualizar" (click)="goToPage(currentPage)"><i class="fas fa-sync"></i></button>
+         <button class="tool-button success ml-2" title="Nuevo" (click)="newProject()"><i class="fas fa-file"></i></button>
+         <button class="tool-button warning" title="Editar" (click)="editProject()"><i class="fas fa-edit"></i></button>
+         <button class="tool-button alert ml-2" title="Eliminar" (click)="deleteProject()"><i class="fas fa-trash"></i></button>
+         <button class="tool-button dark ml-2" title="BackUp" (click)="backup()"><i class="fas fa-download"></i></button>
+         <button class="tool-button dark" title="Cargar" (click)="uploadInput.click()"><i class="fas fa-upload"></i></button>
+         <input [hidden]="true" type="file" class="form-control" #uploadInput (change)="decodeUploadFile($event)" accept=".json"/>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <table class="table row-hover mt-2">
+         <thead>
+            <tr>
+               <th>Seleccionado</th>
+               <th>Título</th>
+               <th>Fecha de Inicio</th>
+               <th data-role="hint"
+               data-hint-position="top"
+               data-hint-text="<strong>Definition Of Done</strong><br/> Funcionalidades requeridas realizadas, sin considerar calidad o funcionalidad.">Fecha de DOD</th>
+               <th data-role="hint"
+               data-hint-position="top"
+               data-hint-text="<strong>Definition Of Ready</strong><br/> Funcionalidades requeridas realizadas, con calidad y funcionalidad.">Fecha de DOR</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr *ngFor="let project of projects" (click)="selectProject(project)">
+               <td class="text-right"><span *ngIf="projectSelected === project" class="far fa-hand-point-right"></span></td>
+               <td>{{project.name}}</td>
+               <td>{{project.start_date | date:'y-MM-dd'}}</td>
+               <td>{{project.dod_date | date:'y-MM-dd'}}</td>
+               <td>{{project.dor_date | date:'y-MM-dd'}}</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <div class="toolbar">
+         <button type="button" class="button light" *ngIf="currentPage === 1" title="Primera Página" disabled>Primera</button>
+         <button type="button" class="button light" *ngIf="currentPage !== 1" title="Primera Página" (click)="goToPage(1)">Primera</button>
+         <button type="button" class="button light" *ngIf="currentPage > 1" title="Página Anterior" (click)="goToPage((currentPage * 1) - 1)">{{(currentPage * 1) - 1}}</button>
+         <button type="button" class="button primary" title="Página Actual">{{currentPage}}</button>
+         <button type="button" class="button light" *ngIf="currentPage < lastPage" title="Página Siguiente" (click)="goToPage((currentPage * 1) + 1)">{{(currentPage * 1) + 1}}</button>
+         <button type="button" class="button light" *ngIf="currentPage !== lastPage" title="Última Página" (click)="goToPage(lastPage)">Última</button>
+         <button type="button" class="button light" *ngIf="currentPage === lastPage" title="Última Página" disabled>Última</button>
+         <button type="button" class="button success ml-2" title="Ir a la Página" (click)="goToPage(goToPageNumber.value)">Ir a</button>
+         <input type="number" min="{{1}}" max="{{lastPage}}" placeholder="Ir a la Página" #goToPageNumber>
+      </div>
+   </div>
+</div>
+<div class="row" *ngIf="showDialog">
+   <div class="cell-12 mt-5">
+      <div class="window" data-role="window" data-icon="<span class='mif-pencil'></span>" data-title="Datos:" data-btn-close="false" data-btn-min="false" data-btn-max="false" data-width="800" data-shadow="true" data-place="top-center" data-resizable="false" data-draggable="false">
+         <div class="window-content m-2">
+            <div class="container">
+               <div class="row">
+                  <div class="cell-12">
+                     <div class="form-group row">
+                        <label for="name">Título</label>
+                        <input type="text" id="name" name="name" placeholder="Título" [(ngModel)]="projectSelected.name">
+                     </div>
+                     <div class="form-group row">
+                        <label for="description">Descripción</label>
+                        <ck-editor id="description" name="description" skin="moono-lisa" [(ngModel)]="projectSelected.description"></ck-editor>
+                     </div>
+                     <div class="form-group row">
+                        <label for="start_date">Fecha de Inicio</label>
+                        <input type="date" data-role="datepicker" id="start_date" name="start_date" placeholder="Fecha de Inicio" [ngModel]="projectSelected.start_date | date:'y-MM-dd'" data-on-set="setDateTimeStart($event)">
+                     </div>
+                     <div class="form-group row">
+                        <label for="dod_date" data-role="hint"
+                        data-hint-position="top"
+                        data-hint-text="<strong>Definition Of Done</strong><br/> Funcionalidades requeridas realizadas, sin considerar calidad o funcionalidad.">Fecha de DOD</label>
+                        <input type="date" data-role="datepicker" id="dod_date" name="dod_date" placeholder="Fecha de DOD" [ngModel]="projectSelected.dod_date | date:'y-MM-dd'" data-on-set="setDateTimeDOD($event)">
+                     </div>
+                     <div class="form-group row">
+                        <label for="dor_date" data-role="hint"
+                        data-hint-position="top"
+                        data-hint-text="<strong>Definition Of Ready</strong><br/> Funcionalidades requeridas realizadas, con calidad y funcionalidad.">Fecha de DOR</label>
+                        <input type="date" data-role="datepicker" id="dor_date" name="dor_date" placeholder="Fecha de DOR" [ngModel]="projectSelected.dor_date | date:'y-MM-dd'" data-on-set="setDateTimeDOR($event)">
+                     </div>
+                     <div class="form-group row">
+                        <div class="toolbar">
+                           <label class="mr-2"><strong>Adjuntos</strong></label>
+                           <input type="file" [hidden]="true" #project_attachment id="project_attachment_file" name="project_attachment_file" (change)="CodeFileProjectAttachment($event)">
+                           <button class="tool-button dark" (click)="project_attachment.click()"><span class="mif-upload"></span></button>
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <table class="table row-hover mt-2">
+                           <thead>
+                              <tr>
+                                 <th>Nombre</th>
+                                 <th>Opciones</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr *ngFor="let attachment of attachments">
+                                 <td>{{attachment.project_attachment_file_name}}</td>
+                                 <td>
+                                    <div class="toolbar">
+                                       <button class="tool-button dark" (click)="downloadAttachment(attachment)"><span class="mif-download"></span></button>
+                                       <button class="tool-button danger ml-2" (click)="deleteAttachment(attachment)"><span class="mif-cancel"></span></button>
+                                    </div>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt-2">
+                  <div class="cell text-center">
+                     <button type="button" class="button success" (click)="saveDialogResult()">Guardar</button>
+                     <button type="button" class="button alert" (click)="cancelDialogResult()">Cancelar</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

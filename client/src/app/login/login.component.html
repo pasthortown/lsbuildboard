@@ -1,0 +1,65 @@
+<div class="container" class="login-page">
+  <div class="row"><div class="cell" style="height: 100px;"></div></div>
+  <div class="row">
+    <div class="cell-3"></div>
+    <div class="cell-6 pretty-form">
+      <form>
+        <div class="row">
+          <div class="cell text-center">
+            <img src="assets/images/logo_system.png" width="auto" height="150px" />
+          </div>
+        </div>
+        <div class="form-group row mt-3 mb-3">
+          <input type="email" data-role="materialinput"
+                name="email"
+                data-icon="<span class='mif-envelop'>"
+                placeholder="Correo Electrónico"
+                data-label="Correo Electrónico"
+                data-informer="Ingrese su correo electrónico"
+                data-cls-line="bg-cyan"
+                data-cls-label="fg-cyan"
+                data-cls-informer="fg-lightCyan"
+                [(ngModel)]="email"
+          >
+        </div>
+        <div class="form-group row mt-3 mb-3">
+          <input type="password" data-role="materialinput"
+                name="password"
+                data-icon="<span class='mif-key'>"
+                placeholder="Contraseña"
+                data-label="Contraseña"
+                data-informer="Ingrese la contraseña de su cuenta"
+                data-cls-line="bg-cyan"
+                data-cls-label="fg-cyan"
+                data-cls-informer="fg-lightCyan"
+                [(ngModel)]="password"
+          >
+        </div>
+        <div class="row mb-3 mt-3" *ngIf="esperando">
+          <div data-role="activity" data-type="metro" data-style="color"></div>
+        </div>
+        <div class="row">
+          <div class="cell text-center">
+            <button
+              type="submit"
+              class="button success mr-2"
+              (click)="login()"
+            >
+              Ingresar
+            </button>
+            <a [routerLink]="['/register']" class="button primary mr-2">
+              Crear Cuenta
+            </a>
+            <button
+              type="button"
+              class="button warning"
+              (click)="password_recovery()"
+            >
+              Recuperar Contraseña
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

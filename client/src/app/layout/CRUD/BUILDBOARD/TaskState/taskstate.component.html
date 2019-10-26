@@ -1,0 +1,109 @@
+<div class="row">
+   <h1 class="cell-12 text-right">
+      Estado de la Tarea
+   </h1>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <div class="toolbar">
+         <button class="tool-button primary" title="Actualizar" (click)="goToPage(currentPage)"><i class="fas fa-sync"></i></button>
+         <button class="tool-button success ml-2" title="Nuevo" (click)="newTaskState()"><i class="fas fa-file"></i></button>
+         <button class="tool-button warning" title="Editar" (click)="editTaskState()"><i class="fas fa-edit"></i></button>
+         <button class="tool-button alert ml-2" title="Eliminar" (click)="deleteTaskState()"><i class="fas fa-trash"></i></button>
+         <button class="tool-button dark ml-2" title="BackUp" (click)="backup()"><i class="fas fa-download"></i></button>
+         <button class="tool-button dark" title="Exportar CSV" (click)="toCSV()"><i class="fas fa-file-csv"></i></button>
+         <button class="tool-button dark" title="Cargar" (click)="uploadInput.click()"><i class="fas fa-upload"></i></button>
+         <input [hidden]="true" type="file" class="form-control" #uploadInput (change)="decodeUploadFile($event)" accept=".json"/>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <table class="table row-hover mt-2">
+         <thead>
+            <tr>
+               <th>Seleccionado</th>
+               <th>Marca de Tiempo</th>
+               <th>Comentario</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr *ngFor="let task_state of task_states" (click)="selectTaskState(task_state)">
+               <td class="text-right"><span *ngIf="task_stateSelected === task_state" class="far fa-hand-point-right"></span></td>
+               <td>{{task_state.date_time}}</td>
+               <td>{{task_state.comment}}</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+<div class="row">
+   <div class="cell-12">
+      <div class="toolbar">
+         <button type="button" class="button light" *ngIf="currentPage === 1" title="Primera Página" disabled>Primera</button>
+         <button type="button" class="button light" *ngIf="currentPage !== 1" title="Primera Página" (click)="goToPage(1)">Primera</button>
+         <button type="button" class="button light" *ngIf="currentPage > 1" title="Página Anterior" (click)="goToPage((currentPage * 1) - 1)">{{(currentPage * 1) - 1}}</button>
+         <button type="button" class="button primary" title="Página Actual">{{currentPage}}</button>
+         <button type="button" class="button light" *ngIf="currentPage < lastPage" title="Página Siguiente" (click)="goToPage((currentPage * 1) + 1)">{{(currentPage * 1) + 1}}</button>
+         <button type="button" class="button light" *ngIf="currentPage !== lastPage" title="Última Página" (click)="goToPage(lastPage)">Última</button>
+         <button type="button" class="button light" *ngIf="currentPage === lastPage" title="Última Página" disabled>Última</button>
+         <button type="button" class="button success ml-2" title="Ir a la Página" (click)="goToPage(goToPageNumber.value)">Ir a</button>
+         <input type="number" min="{{1}}" max="{{lastPage}}" placeholder="Ir a la Página" #goToPageNumber>
+      </div>
+   </div>
+</div>
+<div class="row" *ngIf="showDialog">
+   <div class="cell-12 mt-5">
+      <div class="window" data-role="window" data-icon="<span class='mif-pencil'></span>" data-title="Datos:" data-btn-close="false" data-btn-min="false" data-btn-max="false" data-width="800" data-shadow="true" data-place="top-center" data-resizable="false" data-draggable="false">
+         <div class="window-content m-2">
+            <div class="container">
+               <div class="row">
+                  <div class="cell-12">
+                     <div class="form-group row">
+                        <label for="date_time">Marca de Tiempo</label>
+                        <input type="date" readonly data-role="input" id="date_time" name="date_time" placeholder="dateTime" [ngModel]="task_stateSelected.date_time | date:'y-MM-dd'" (ngModelChange)="task_stateSelected.date_time = $event">
+                     </div>
+                     <div class="form-group row">
+                        <label for="comment">Comentario</label>
+                        <ck-editor id="comment" name="comment" skin="moono-lisa" [(ngModel)]="task_stateSelected.comment"></ck-editor>
+                     </div>
+                     <div class="form-group row">
+                        <label for="task_id">Tarea</label>
+                        <select id="task_id" name="task_id" [(ngModel)]="task_stateSelected.task_id">
+                           <option value="0" selected>Seleccione...</option>
+                           <option *ngFor="let task of tasks" value={{task.id}}>
+                              {{task.title}}
+                           </option>
+                        </select>
+                     </div>
+                     <div class="form-group row">
+                        <label for="state_id">Estado</label>
+                        <select id="state_id" name="state_id" [(ngModel)]="task_stateSelected.state_id">
+                           <option value="0" selected>Seleccione...</option>
+                           <option *ngFor="let state of states" value={{state.id}}>
+                              {{state.description}}
+                           </option>
+                        </select>
+                     </div>
+                     <div class="form-group row">
+                        <label for="user_id">Usuario Asignado</label>
+                        <select id="user_id" name="user_id" [(ngModel)]="task_stateSelected.user_id">
+                           <option value="0" selected>Seleccione...</option>
+                           <option *ngFor="let user of users" value={{user.id}}>
+                              {{user.name}}
+                           </option>
+                        </select>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt-2">
+                  <div class="cell text-center">
+                     <button type="button" class="button success" (click)="saveDialogResult()">Guardar</button>
+                     <button type="button" class="button alert" (click)="cancelDialogResult()">Cancelar</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
