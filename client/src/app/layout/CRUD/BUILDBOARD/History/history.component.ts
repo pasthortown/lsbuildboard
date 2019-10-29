@@ -105,6 +105,9 @@ export class HistoryComponent implements OnInit {
    
    getHistories(project_id: number) {
       this.histories = [];
+      if (this.project_id == 0) {
+         return;
+      }
       this.historySelected = new History();
       this.showDialog = false;
       this.historyDataService.get_paginate(this.recordsByPage, this.currentPage, this.project_id).then( r => {

@@ -30,8 +30,8 @@ export class TaskService {
       }).catch( error => { this.handledError(error.json()); });
    }
 
-   get_task_groups(user_id: number): Promise<any> {
-      return this.http.get(this.url + 'groups?user_id=' + user_id.toString(), this.options).toPromise()
+   get_task_groups(user_id: number, project_id: number): Promise<any> {
+      return this.http.get(this.url + 'groups?user_id=' + user_id.toString() + '&project_id=' + project_id.toString(), this.options).toPromise()
       .then( r => {
          return r.json();
       }).catch( error => { this.handledError(error.json()); });

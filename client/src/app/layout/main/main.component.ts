@@ -7,6 +7,8 @@ import { TaskStateService } from 'src/app/services/CRUD/BUILDBOARD/taskstate.ser
 import { TaskAttachment } from 'src/app/models/BUILDBOARD/TaskAttachment';
 import { saveAs } from 'file-saver/FileSaver';
 import { TaskAttachmentService } from 'src/app/services/CRUD/BUILDBOARD/taskattachment.service';
+import { Project } from 'src/app/models/BUILDBOARD/Project';
+import { ProjectService } from 'src/app/services/CRUD/BUILDBOARD/project.service';
 
 @Component({
     selector: 'app-main',
@@ -15,21 +17,35 @@ import { TaskAttachmentService } from 'src/app/services/CRUD/BUILDBOARD/taskatta
 })
 export class MainComponent implements OnInit {
     task_groups: any[] = [];
+    projects: Project[] = [];
     user: any;
+    project_id = 0;
+
     constructor(
         private taskDataService: TaskService,
         private taskAttachmentDataService: TaskAttachmentService,
         private taskStateDataService: TaskStateService,
+        private projectDataService: ProjectService,
     ) {}
 
     ngOnInit() {
       this.user = JSON.parse(sessionStorage.getItem('user'));
-      this.getTaskGroups();
+      this.getProject();
+    }
+
+    getProject() {
+        this.projects = [];
+        this.projectDataService.get().then( r => {
+           this.projects = r as Project[];
+        }).catch( e => console.log(e) );
     }
 
     getTaskGroups() {
         this.task_groups = [];
-        this.taskDataService.get_task_groups(this.user.id).then( r => {
+        if (this.project_id == 0) {
+            return;
+        }
+        this.taskDataService.get_task_groups(this.user.id, this.project_id).then( r => {
            this.task_groups = r as any[];
            this.task_groups.forEach(task_group => {
                task_group.tasks.forEach(task => {

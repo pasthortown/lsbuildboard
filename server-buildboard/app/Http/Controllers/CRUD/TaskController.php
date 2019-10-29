@@ -38,11 +38,16 @@ class TaskController extends Controller
        $toReturn = [];
        $tasks = [];
        $user_id = $data['user_id'];
+       $project_id = $data['project_id'];
        $states = State::orderBy('id')->get();
        $max_tasks_state_time = TaskState::select(DB::raw('MAX(updated_at) as time'), 'task_id')->groupBy('task_id')->orderBy('task_id')->get();
        foreach($max_tasks_state_time as $max_task_state_time) {
          $task_state = TaskState::where('task_states.updated_at', $max_task_state_time->time)->where('task_id', $max_task_state_time->task_id)
-         ->leftJoin('tasks', 'tasks.id', '=', 'task_states.task_id')->select('tasks.*', 'task_states.state_id', 'task_states.updated_at as assigned_time', 'task_states.comment')->orderBy('tasks.id')->first();
+         ->leftJoin('tasks', 'tasks.id', '=', 'task_states.task_id')
+         ->leftJoin('histories', 'histories.id', '=', 'tasks.history_id')
+         ->leftJoin('projects', 'projects.id', '=', 'histories.project_id')
+         ->where('projects.id', $project_id)
+         ->select('tasks.*', 'task_states.state_id', 'task_states.updated_at as assigned_time', 'task_states.comment')->orderBy('tasks.id')->first();
          array_push($tasks, $task_state);
        }
        foreach($states as $state) {
